@@ -63,8 +63,8 @@ function App() {
   return (
     <div className="app-container">
       <header className="app-header">
-        <h1 className="app-title">Crypto Tracker 🚀</h1>
-        <p className="app-subtitle">Real-time cryptocurrency prices and market data</p>
+        <h1 className="app-title">CryptoMAT</h1>
+        <p className="app-subtitle">Prezzi e dati di mercato in tempo reale</p>
       </header>
 
       <div className="controls-container">
@@ -80,16 +80,16 @@ function App() {
         </div>
 
         <div className="sort-controls">
-          <label className="sort-label">Sort by:</label>
+          <label className="sort-label">Ordina per:</label>
           <select
             value={sortBy}
             onChange={(e) => handleSort(e.target.value as SortBy)}
             className="sort-select"
           >
             <option value="market_cap">Market Cap</option>
-            <option value="name">Name</option>
-            <option value="price">Price</option>
-            <option value="price_change">24h Change</option>
+            <option value="name">Nome</option>
+            <option value="price">Prezzo</option>
+            <option value="price_change">Cambio 24h</option>
           </select>
 
           <button
@@ -103,7 +103,7 @@ function App() {
       </div>
 
       <div className="results-info">
-        Showing {filteredCoins.length} of {coins.length} cryptocurrencies
+        Mostrando {filteredCoins.length} di {coins.length} criptovalute
       </div>
 
       <div className="table-container">
@@ -112,11 +112,11 @@ function App() {
             <tr>
               <th>#</th>
               <th onClick={() => handleSort('name')} style={{ cursor: 'pointer' }}>
-                Name {sortBy === 'name' && (sortOrder === 'asc' ? '↑' : '↓')}
+                Nome {sortBy === 'name' && (sortOrder === 'asc' ? '↑' : '↓')}
               </th>
-              <th>Symbol</th>
+              <th>Simbolo</th>
               <th onClick={() => handleSort('price')} style={{ cursor: 'pointer' }}>
-                Price {sortBy === 'price' && (sortOrder === 'asc' ? '↑' : '↓')}
+                Prezzo {sortBy === 'price' && (sortOrder === 'asc' ? '↑' : '↓')}
               </th>
               <th onClick={() => handleSort('price_change')} style={{ cursor: 'pointer' }}>
                 24h % {sortBy === 'price_change' && (sortOrder === 'asc' ? '↑' : '↓')}
