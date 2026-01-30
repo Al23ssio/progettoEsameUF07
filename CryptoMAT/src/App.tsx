@@ -18,13 +18,13 @@ function App() {
   if (isError) return <ErrorMessage message="Errore nel caricamento dei dati" />;
   if (!coins) return null;
 
-  // Filter coins based on search
+  // filtra i coin in base alla ricerca
   let filteredCoins = coins.filter(coin =>
     coin.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     coin.symbol.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Sort coins
+  // ordina i coin
   filteredCoins.sort((a, b) => {
     let aValue = 0;
     let bValue = 0;
