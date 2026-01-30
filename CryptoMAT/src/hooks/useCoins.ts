@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import type { Coin, CoinDetail, HistoricalData, TimeRange } from '../types';
+import type { TimeRange } from '../types';
 import {
   fetchCoins,
   fetchCoinDetail,
@@ -10,17 +10,20 @@ import {
 import { MOCK_COINS, generateMockCoinDetail, generateHistoricalData } from '../utils/mockData';
 import { aggregateHistoricalData } from '../utils/helpers';
 
-// hook per recuperare la lista delle criptovalute
-export function useCoins() {
+// hook per recuperare la lista delle criptovalute con paginazione
+export function useCoins(page: number = 1) {
   return useQuery({
-    queryKey: ['coins'],
+    queryKey: ['coins', page],
     queryFn: async () => {
       try {
-        const data = await fetchCoins();
-        return data;
+        const data = await fetchCoins(page, 50);
+        return { coins: data, isMockData: false };
       } catch (error) {
         console.warn('API fallita, uso mock data:', error);
-        return MOCK_COINS;
+        // Simula la paginazione sui dati mock
+        const start = (page - 1) * 50;
+        const end = start + 50;
+        return { coins: MOCK_COINS.slice(start, end), isMockData: true };
       }
     },
   });

@@ -4,15 +4,20 @@ import { useCoins } from './hooks/useCoins';
 import { Loading } from './components/Loading';
 import { ErrorMessage } from './components/ErrorMessage';
 import './App.css';
-import type { Coin, SortBy, SortOrder } from './types';
+import type { SortBy, SortOrder } from './types';
 
 function App() {
   const navigate = useNavigate();
-  const { data: coins, isLoading, isError } = useCoins();
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data, isLoading, isError } = useCoins(currentPage);
   
   const [sortBy, setSortBy] = useState<SortBy>('market_cap');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
   const [searchTerm, setSearchTerm] = useState('');
+  
+  const coins = data?.coins || [];
+  const isMockData = data?.isMockData || false;
+  const totalPages = 5; // 5 pagine totali
 
   if (isLoading) return <Loading />;
   if (isError) return <ErrorMessage message="Errore nel caricamento dei dati" />;
@@ -67,6 +72,12 @@ function App() {
         <p className="app-subtitle">Prezzi e dati di mercato in tempo reale</p>
       </header>
 
+      {isMockData && (
+        <div className="mock-data-warning">
+          ⚠️ L'API ha raggiunto il limite di richieste. Vengono mostrati dati mock di esempio.
+        </div>
+      )}
+
       <div className="controls-container">
         <div className="search-box">
           <input
@@ -103,7 +114,7 @@ function App() {
       </div>
 
       <div className="results-info">
-        Mostrando {filteredCoins.length} di {coins.length} criptovalute
+        Mostrando {filteredCoins.length} criptovalute (Pagina {currentPage} di {totalPages})
       </div>
 
       <div className="table-container">
@@ -127,7 +138,7 @@ function App() {
             </tr>
           </thead>
           <tbody>
-            {filteredCoins.slice(0, 50).map((coin) => (
+            {filteredCoins.map((coin) => (
               <tr
                 key={coin.id}
                 onClick={() => navigate(`/coin/${coin.id}`)}
@@ -159,6 +170,36 @@ function App() {
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div className="pagination-container">
+        <button
+          className="pagination-btn"
+          onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+          disabled={currentPage === 1}
+        >
+          ← Precedente
+        </button>
+        
+        <div className="pagination-numbers">
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+            <button
+              key={page}
+              className={`pagination-number ${currentPage === page ? 'active' : ''}`}
+              onClick={() => setCurrentPage(page)}
+            >
+              {page}
+            </button>
+          ))}
+        </div>
+        
+        <button
+          className="pagination-btn"
+          onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+          disabled={currentPage === totalPages}
+        >
+          Successiva →
+        </button>
       </div>
     </div>
   );

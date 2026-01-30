@@ -1,4 +1,4 @@
-import type { Coin, CoinDetail, HistoricalData, TimeRange } from '../types';
+import type { Coin, CoinDetail } from '../types';
 
 //url dell'api coingecko
 const BASE_URL = 'https://api.coingecko.com/api/v3';

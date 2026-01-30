@@ -9,65 +9,104 @@ function seededRandom(seed: number): number {
 }
 
 /**
- * Mock data per le coin principali
+ * Genera mock data per 250 criptovalute
  */
-const MOCK_COINS: Coin[] = [
-  {
-    id: 'bitcoin',
-    symbol: 'btc',
-    name: 'Bitcoin',
-    image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png',
-    current_price: 97234.56,
-    market_cap: 1923456789012,
-    market_cap_rank: 1,
-    price_change_percentage_24h: 2.34,
-    isFavorite: false,
-  },
-  {
-    id: 'ethereum',
-    symbol: 'eth',
-    name: 'Ethereum',
-    image: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
-    current_price: 3456.78,
-    market_cap: 415678901234,
-    market_cap_rank: 2,
-    price_change_percentage_24h: -1.23,
-    isFavorite: false,
-  },
-  {
-    id: 'tether',
-    symbol: 'usdt',
-    name: 'Tether',
-    image: 'https://assets.coingecko.com/coins/images/325/large/Tether.png',
-    current_price: 1.00,
-    market_cap: 95678901234,
-    market_cap_rank: 3,
-    price_change_percentage_24h: 0.01,
-    isFavorite: false,
-  },
-  {
-    id: 'binancecoin',
-    symbol: 'bnb',
-    name: 'BNB',
-    image: 'https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png',
-    current_price: 612.34,
-    market_cap: 89456789012,
-    market_cap_rank: 4,
-    price_change_percentage_24h: 1.56,
-    isFavorite: false,
-  },
-  {
-    id: 'solana',
-    symbol: 'sol',
-    name: 'Solana',
-    image: 'https://assets.coingecko.com/coins/images/4128/large/solana.png',
-    current_price: 234.56,
-    market_cap: 78901234567,
-    market_cap_rank: 5,
-    price_change_percentage_24h: 3.45,
-    isFavorite: false,
-  },
-];
+function generateMockCoins(): Coin[] {
+  const topCoins = [
+    { id: 'bitcoin', symbol: 'btc', name: 'Bitcoin', image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png', price: 97234.56, marketCap: 1923456789012 },
+    { id: 'ethereum', symbol: 'eth', name: 'Ethereum', image: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png', price: 3456.78, marketCap: 415678901234 },
+    { id: 'tether', symbol: 'usdt', name: 'Tether', image: 'https://assets.coingecko.com/coins/images/325/large/Tether.png', price: 1.00, marketCap: 95678901234 },
+    { id: 'binancecoin', symbol: 'bnb', name: 'BNB', image: 'https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png', price: 612.34, marketCap: 89456789012 },
+    { id: 'solana', symbol: 'sol', name: 'Solana', image: 'https://assets.coingecko.com/coins/images/4128/large/solana.png', price: 234.56, marketCap: 78901234567 },
+    { id: 'ripple', symbol: 'xrp', name: 'XRP', image: 'https://assets.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png', price: 0.54, marketCap: 29567890123 },
+    { id: 'cardano', symbol: 'ada', name: 'Cardano', image: 'https://assets.coingecko.com/coins/images/975/large/cardano.png', price: 0.87, marketCap: 30678901234 },
+    { id: 'dogecoin', symbol: 'doge', name: 'Dogecoin', image: 'https://assets.coingecko.com/coins/images/5/large/dogecoin.png', price: 0.12, marketCap: 17234567890 },
+    { id: 'polkadot', symbol: 'dot', name: 'Polkadot', image: 'https://assets.coingecko.com/coins/images/12171/large/polkadot.png', price: 23.45, marketCap: 28901234567 },
+    { id: 'polygon', symbol: 'matic', name: 'Polygon', image: 'https://assets.coingecko.com/coins/images/4713/large/matic-token-icon.png', price: 1.23, marketCap: 11234567890 },
+  ];
+
+  const coins: Coin[] = [];
+
+  // Aggiungi le top 10 coin reali
+  topCoins.forEach((coin, index) => {
+    const seed = coin.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const changePercent = (seededRandom(seed * 100) - 0.5) * 10;
+    
+    coins.push({
+      id: coin.id,
+      symbol: coin.symbol,
+      name: coin.name,
+      image: coin.image,
+      current_price: coin.price,
+      market_cap: coin.marketCap,
+      market_cap_rank: index + 1,
+      price_change_percentage_24h: changePercent,
+      isFavorite: false,
+    });
+  });
+
+  // Genera altre 240 coin mock per arrivare a 250
+  const coinNames = [
+    'Avalanche', 'Chainlink', 'Shiba Inu', 'Litecoin', 'Cosmos', 'Uniswap', 'Stellar', 'Monero', 'Algorand', 'Bitcoin Cash',
+    'Tron', 'Ethereum Classic', 'VeChain', 'Filecoin', 'Internet Computer', 'Hedera', 'ApeCoin', 'Sandbox', 'Decentraland', 'Axie Infinity',
+    'Tezos', 'EOS', 'Aave', 'Maker', 'Neo', 'Fantom', 'Elrond', 'Theta', 'Flow', 'Zcash',
+    'Kusama', 'Dash', 'Compound', 'Curve', 'Synthetix', 'Yearn Finance', 'Sushi', '1inch', 'Enjin', 'Chiliz',
+    'Basic Attention', 'Loopring', 'Zilliqa', 'Waves', 'OMG Network', 'Qtum', 'ICON', 'Ravencoin', 'Nano', 'Decred',
+    'Horizen', 'Ontology', 'Holo', 'Verge', 'Digibyte', 'Steem', 'Status', 'Augur', 'Civic', 'Storj',
+    'Golem', 'iExec', 'Gnosis', 'Bancor', 'Numeraire', 'Request', 'Kyber', 'Polymath', 'Power Ledger', 'Aragon',
+    'District0x', 'FunFair', 'Metal', 'Raiden', 'SingularityNET', 'Origin', 'Ocean Protocol', 'Fetch AI', 'Ankr', 'Celer',
+    'Matic Network', 'Harmony', 'Kava', 'Band Protocol', 'Ren', 'Orchid', 'Balancer', 'UMA', 'Serum', 'Swipe',
+    'Celsius', 'Nexo', 'Crypto.com', 'Enjin Coin', 'Wax', 'Energi', 'Divi', 'Helium', 'Terra', 'Celo',
+    'Secret', 'Chia', 'NEAR Protocol', 'Oasis', 'Injective', 'Thorchain', 'Bluzelle', 'Reserve', 'Alpha Finance', 'Wing',
+    'Perpetual Protocol', 'Dodo', 'Bao Finance', 'Harvest', 'Cream Finance', 'Keep Network', 'NuCypher', 'Badger DAO', 'Rari Capital', 'Reflexer',
+    'Alchemix', 'Fei Protocol', 'Olympus', 'Abracadabra', 'Convex', 'Ribbon Finance', 'Euler', 'Maple Finance', 'TrueFi', 'Goldfinch',
+    'Liquity', 'Frax', 'Tribe', 'Rally', 'Audius', 'Mirror', 'SuperRare', 'Foundation', 'Rarible', 'Zora',
+    'Nifty Gateway', 'OpenSea', 'LooksRare', 'X2Y2', 'Blur', 'Magic Eden', 'Immutable X', 'Gods Unchained', 'Illuvium', 'Star Atlas',
+    'Gala Games', 'Enjin Games', 'Ultra', 'WAX Games', 'Vulcan Forged', 'Mobox', 'Radio Caca', 'Merit Circle', 'Yield Guild', 'BlackPool',
+    'Aavegotchi', 'Alien Worlds', 'Splinterlands', 'My Neighbor Alice', 'Star Sharks', 'CryptoBlades', 'Faraland', 'Legends of Elumia', 'Block Lords', 'Undead Blocks',
+    'Meta Apes', 'Hunters On-Chain', 'Benji Bananas', 'Genopets', 'Stepn', 'Sweatcoin', 'Walken', 'Dotmoovs', 'OliveX', 'Calo',
+    'Step App', 'Wirtual', 'Defit', 'Fitmint', 'Dustland', 'ByBit Token', 'OKB', 'KuCoin Token', 'Gate Token', 'Huobi Token',
+    'FTX Token', 'BitMart Token', 'MEXC Token', 'Bitget Token', 'Phemex Token', 'WOO Network', 'DYDX', 'GMX', 'Gains Network', 'Vertex',
+    'Kwenta', 'Lyra', 'Dopex', 'Premia', 'Hegic', 'Ribbon', 'Friktion', 'Katana', 'Drift Protocol', 'Mango Markets',
+    'Zeta Markets', 'Pyth Network', 'Chainlink Oracles', 'Band Oracles', 'DIA Data', 'API3', 'Tellor', 'Umbrella', 'Razor Network', 'Witnet',
+    'SupraOracles', 'RedStone', 'Flux Protocol', 'Chronicle', 'Stork Oracle', 'Switchboard', 'Entropy', 'Acurast', 'Flare Network', 'Gelato',
+  ];
+
+  for (let i = 0; i < 240; i++) {
+    const rank = i + 11; // Inizia dal rank 11
+    const nameSeed = i * 17 + 42;
+    const name = coinNames[i] || `Crypto Coin ${i + 11}`;
+    const symbol = name.toLowerCase().replace(/\s+/g, '').slice(0, 4) + (i % 10);
+    const id = name.toLowerCase().replace(/\s+/g, '-');
+    
+    // Genera prezzi e market cap decrescenti basati sul rank
+    const basePrice = 1000 / Math.pow(rank / 10, 1.5);
+    const priceVariance = (seededRandom(nameSeed) - 0.5) * basePrice * 0.3;
+    const price = Math.max(0.0001, basePrice + priceVariance);
+    
+    const baseMarketCap = 50000000000 / Math.pow(rank / 10, 1.3);
+    const marketCapVariance = (seededRandom(nameSeed + 100) - 0.5) * baseMarketCap * 0.3;
+    const marketCap = Math.max(1000000, baseMarketCap + marketCapVariance);
+    
+    const changePercent = (seededRandom(nameSeed + 200) - 0.5) * 15;
+    
+    coins.push({
+      id,
+      symbol,
+      name,
+      image: `https://assets.coingecko.com/coins/images/${rank}/large/coin.png`,
+      current_price: price,
+      market_cap: marketCap,
+      market_cap_rank: rank,
+      price_change_percentage_24h: changePercent,
+      isFavorite: false,
+    });
+  }
+
+  return coins;
+}
+
+const MOCK_COINS: Coin[] = generateMockCoins();
 
 // genera dettagli mock per una coin specifica
 export function generateMockCoinDetail(id: string): CoinDetail {
