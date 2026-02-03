@@ -110,7 +110,28 @@ const MOCK_COINS: Coin[] = generateMockCoins();
 
 // genera dettagli mock per una coin specifica
 export function generateMockCoinDetail(id: string): CoinDetail {
-  const coin = MOCK_COINS.find(c => c.id === id) || MOCK_COINS[0];
+  // Cerca prima nei mock coins esistenti
+  let coin = MOCK_COINS.find(c => c.id === id);
+  
+  // Se non trovata, genera dati dinamici per questa coin invece di usare Bitcoin
+  if (!coin) {
+    const seed = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const price = Math.max(0.01, seededRandom(seed * 123) * 1000);
+    const marketCap = price * seededRandom(seed * 456) * 1000000000;
+    const changePercent = (seededRandom(seed * 789) - 0.5) * 10;
+    
+    coin = {
+      id: id,
+      symbol: id.slice(0, 4).toUpperCase(),
+      name: id.charAt(0).toUpperCase() + id.slice(1).replace(/-/g, ' '),
+      image: `https://assets.coingecko.com/coins/images/1/large/${id}.png`,
+      current_price: price,
+      market_cap: marketCap,
+      market_cap_rank: 999,
+      price_change_percentage_24h: changePercent,
+      isFavorite: false,
+    };
+  }
   
   return {
     id: coin.id,
@@ -145,8 +166,18 @@ export function generateMockCoinDetail(id: string): CoinDetail {
 
 // genera dati storici mock per una coin specifica e range di tempo
 export function generateHistoricalData(coinId: string, range: TimeRange): HistoricalData[] {
-  const coin = MOCK_COINS.find(c => c.id === coinId) || MOCK_COINS[0];
-  const basePrice = coin.current_price;
+  // Cerca prima nei mock coins esistenti
+  let coin = MOCK_COINS.find(c => c.id === coinId);
+  
+  // Se non trovata, genera dati dinamici
+  let basePrice: number;
+  if (!coin) {
+    const seed = coinId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    basePrice = Math.max(0.01, seededRandom(seed * 123) * 1000);
+  } else {
+    basePrice = coin.current_price;
+  }
+  
   const data: HistoricalData[] = [];
   const now = Date.now();
   
