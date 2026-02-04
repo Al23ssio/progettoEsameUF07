@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCoins } from './hooks/useCoins';
+import { useCoins, useAllCoins } from './hooks/useCoins';
 import { Loading } from './components/Loading';
 import { ErrorMessage } from './components/ErrorMessage';
 import './App.css';
@@ -9,11 +9,19 @@ import type { SortBy, SortOrder } from './types';
 function App() {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
-  const { data, isLoading, isError } = useCoins(currentPage);
-  
   const [sortBy, setSortBy] = useState<SortBy>('market_cap');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
   const [searchTerm, setSearchTerm] = useState('');
+  
+  // Usa hook diversi in base alla presenza di ricerca
+  const shouldSearchAll = searchTerm.trim().length > 0;
+  const { data: pageData, isLoading: pageLoading, isError: pageError } = useCoins(currentPage);
+  const { data: allData, isLoading: allLoading, isError: allError } = useAllCoins();
+  
+  // Seleziona i dati appropriati in base alla ricerca
+  const data = shouldSearchAll ? allData : pageData;
+  const isLoading = shouldSearchAll ? allLoading : pageLoading;
+  const isError = shouldSearchAll ? allError : pageError;
   
   const coins = data?.coins || [];
   const isMockData = data?.isMockData || false;
@@ -82,7 +90,7 @@ function App() {
         <div className="search-box">
           <input
             type="text"
-            placeholder="Search by name or symbol..."
+            placeholder="Ricerca per nome..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="search-input"
@@ -114,7 +122,9 @@ function App() {
       </div>
 
       <div className="results-info">
-        Mostrando {filteredCoins.length} criptovalute (Pagina {currentPage} di {totalPages})
+        Mostrando {filteredCoins.length} criptovalute
+        {!shouldSearchAll && ` (Pagina ${currentPage} di ${totalPages})`}
+        {shouldSearchAll && searchTerm && ` - Ricerca globale: "${searchTerm}"`}
       </div>
 
       <div className="table-container">
@@ -176,7 +186,7 @@ function App() {
         <button
           className="pagination-btn"
           onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-          disabled={currentPage === 1}
+          disabled={currentPage === 1 || shouldSearchAll}
         >
           ← Precedente
         </button>
@@ -187,6 +197,7 @@ function App() {
               key={page}
               className={`pagination-number ${currentPage === page ? 'active' : ''}`}
               onClick={() => setCurrentPage(page)}
+              disabled={shouldSearchAll}
             >
               {page}
             </button>
@@ -196,7 +207,7 @@ function App() {
         <button
           className="pagination-btn"
           onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-          disabled={currentPage === totalPages}
+          disabled={currentPage === totalPages || shouldSearchAll}
         >
           Successiva →
         </button>

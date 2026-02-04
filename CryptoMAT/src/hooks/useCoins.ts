@@ -29,6 +29,26 @@ export function useCoins(page: number = 1) {
   });
 }
 
+// hook per recuperare TUTTE le criptovalute (per la ricerca globale)
+export function useAllCoins() {
+  return useQuery({
+    queryKey: ['all-coins'],
+    queryFn: async () => {
+      try {
+        // Carica tutte le 250 coin (5 pagine x 50)
+        const promises = Array.from({ length: 5 }, (_, i) => fetchCoins(i + 1, 50));
+        const results = await Promise.all(promises);
+        const allCoins = results.flat();
+        return { coins: allCoins, isMockData: false };
+      } catch (error) {
+        console.warn('API fallita, uso mock data:', error);
+        return { coins: MOCK_COINS, isMockData: true };
+      }
+    },
+    staleTime: 10 * 60 * 1000, // Cache per 10 minuti
+  });
+}
+
 // hook per recuperare i dettagli di una specifica coin
 export function useCoinDetail(id: string) {
   return useQuery({
