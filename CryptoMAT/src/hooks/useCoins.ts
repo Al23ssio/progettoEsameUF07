@@ -26,6 +26,8 @@ export function useCoins(page: number = 1) {
         return { coins: MOCK_COINS.slice(start, end), isMockData: true };
       }
     },
+    staleTime: 30 * 60 * 1000, // Cache per 30 minuti
+    gcTime: 60 * 60 * 1000, // Mantieni in cache per 1 ora
   });
 }
 
@@ -35,17 +37,16 @@ export function useAllCoins() {
     queryKey: ['all-coins'],
     queryFn: async () => {
       try {
-        // Carica tutte le 250 coin (5 pagine x 50)
-        const promises = Array.from({ length: 5 }, (_, i) => fetchCoins(i + 1, 50));
-        const results = await Promise.all(promises);
-        const allCoins = results.flat();
+        // Carica 250 coin in una SOLA chiamata invece di 5 separate
+        const allCoins = await fetchCoins(1, 250);
         return { coins: allCoins, isMockData: false };
       } catch (error) {
         console.warn('API fallita, uso mock data:', error);
         return { coins: MOCK_COINS, isMockData: true };
       }
     },
-    staleTime: 10 * 60 * 1000, // Cache per 10 minuti
+    staleTime: 30 * 60 * 1000, // Cache per 30 minuti (era 10)
+    gcTime: 60 * 60 * 1000, // Mantieni in cache per 1 ora
   });
 }
 
@@ -63,6 +64,8 @@ export function useCoinDetail(id: string) {
       }
     },
     enabled: !!id,
+    staleTime: 20 * 60 * 1000, // Cache per 20 minuti
+    gcTime: 60 * 60 * 1000, // Mantieni in cache per 1 ora
   });
 }
 
@@ -93,6 +96,8 @@ export function useHistoricalData(id: string, range: TimeRange) {
       }
     },
     enabled: !!id,
+    staleTime: 15 * 60 * 1000, // Cache per 15 minuti
+    gcTime: 45 * 60 * 1000, // Mantieni in cache per 45 minuti
   });
 }
 

@@ -1,3 +1,11 @@
+!!!IMPORTANTE!!!
+----------------
+Nota sulle performance API: CryptoMAT si appoggia al piano pubblico gratuito delle API di CoinGecko. A causa dei limiti di rate-limit imposti dal provider (poche richieste al minuto), si potrebbero notare dei rallentamenti nell'aggiornamento dei dati real-time o la visualizzazione di dati 'mock' (simulati) quando si passa rapidamente da una criptovaluta all'altra.
+
+Questo comportamento è "intenzionale": l'applicazione è progettata per gestire il rate-limit attivando automaticamente un fallback sui dati mock e mantenendo in cache le coin già visitate per garantire la stabilità della UI senza generare errori.
+Ho provato anche con l'aiuto dell'IA ad ottimizzare il più possibile (ad esempio anzichè fare 5 chiamate API una per ogni pagina ne viene fatta 1 per tutte e 250 le coin ma comunque il problema persiste).
+
+
 # CryptoMAT
 
 Un applicazione web per monitorare i prezzi delle criptovalute in tempo reale. Il progetto usa l'API di CoinGecko per recuperare i dati di mercato e mostrare informazioni dettagliate su centinaia di crypto.
