@@ -4,6 +4,13 @@ Nota sulle performance API: CryptoMAT si appoggia al piano pubblico gratuito del
 
 Questo comportamento è "intenzionale": l'applicazione è progettata per gestire il rate-limit attivando automaticamente un fallback sui dati mock e mantenendo in cache le coin già visitate per garantire la stabilità della UI senza generare errori.
 Ho provato anche con l'aiuto dell'IA ad ottimizzare il più possibile (ad esempio anzichè fare 5 chiamate API una per ogni pagina ne viene fatta 1 per tutte e 250 le coin ma comunque il problema persiste).
+----------------
+
+ERRORI COMUNI:
+- CERTI CARATTERI SE USATI A INIZIO PAROLA NEL FILTRO DI RICERCA IN BASE AL NOME DELLA COIN FANNO CRASHARE TUTTO.
+- SE SI SPAMMA E SI VISUALIZZANO DIVERSE COIN IN POCO TEMPO LE CHIAMATE FINISCONO E OGNI TANTO I DATI MOCK NON HANNO SENSO (NON CAPISCO PERCHE') (AD ESEMPIO SHIBA INU MOSTRA PREZZI STRANI SE VISUALIZZATA IMMEDIATAMENTE DOPO ALTRE COIN E DICE INOLTRE CHE LA CRIPTOVALUTA UTILIZZATA NON E' QUELLA CHE SI STA ANALIZZANDO)
+
+[CREDO(CREDO{CREDO[SPERO]}) CHE TUTTI I PROBLEMI SIANO RIGUARDANTI AL LIMITE CHE IMPONE COINGECKO QUANDO SI USA L'API GRATUITA, PERCHE' SE SI ASPETTA QUALCHE MINUTO E SI REFRESHA LA PAGINA POI LA PRIMA SICURAMENTE MA FORSE ANCHE QUALCHE COIN DOPO VA DA DIO, CON TANTO DI DESCRIZIONE E GRAFICI CON I PREZZI PERFETTI]
 
 
 # CryptoMAT
