@@ -10,14 +10,19 @@ Ho provato anche con l'aiuto dell'IA ad ottimizzare il più possibile (ad esempi
 
 Un applicazione web per monitorare i prezzi delle criptovalute in tempo reale. Il progetto usa l'API di CoinGecko per recuperare i dati di mercato e mostrare informazioni dettagliate su centinaia di crypto.
 
-## Caratteristiche
+## Scopo del progetto
 
-- **Lista criptovalute**: visualizza fino a 250 criptovalute con prezzi aggiornati, market cap e variazioni 24h
-- **Dettagli moneta**: cliccando su una crypto si accede a una pagina con informazioni approfondite e grafici storici
-- **Ricerca**: barra di ricerca per trovare velocemente le crypto per nome o simbolo
-- **Ordinamento**: possibilità di ordinare per market cap, prezzo, nome o variazione percentuale
-- **Grafici**: visualizzazione dello storico prezzi con intervalli giornaliero, settimanale e mensile
-- **Responsive**: interfaccia ottimizzata per desktop e mobile
+Single Page Application (SPA) sviluppata per l'esame di Programmazione WEB UF07. L'applicazione funge da terminale di monitoraggio per il mercato delle criptovalute, interfacciandosi in tempo reale con le API di CoinGecko per fornire dati accurati e precisi su 250 asset digitali. Il progetto dimostra competenze in sviluppo React/TypeScript, gestione stato asincrono, routing client-side e visualizzazione dati.
+
+## Funzionalità completate
+
+- **Market Explorer**: visualizza le top 250 criptovalute suddivise in 5 pagine da 50 asset ciascuna con prezzi aggiornati, market cap e variazioni 24h
+- **Deep Analysis**: pagina di dettaglio per ogni singolo asset con dati storici, tecnici e grafici interattivi
+- **Ricerca dinamica**: barra di ricerca per trovare velocemente le crypto per nome o simbolo con filtro real-time
+- **Ordinamento avanzato**: possibilità di ordinare per market cap, prezzo, nome o variazione percentuale
+- **Grafici interattivi**: visualizzazione dello storico prezzi con filtri temporali (giornaliero, settimanale, mensile)
+- **Design responsive**: interfaccia ottimizzata per desktop e mobile
+- **Gestione errori**: fallback automatico a dati mock in caso di rate-limit API con sistema di caching
 
 ## Tecnologie utilizzate
 
@@ -28,38 +33,55 @@ Un applicazione web per monitorare i prezzi delle criptovalute in tempo reale. I
 - **Vite** come build tool
 - **CoinGecko API** per dati reali delle criptovalute
 
+## API utilizzata
+
+**CoinGecko Public API v3** (piano gratuito)
+- **Endpoint base**: `https://api.coingecko.com/api/v3/`
+- **Autenticazione**: nessuna (API pubblica, no credenziali richieste)
+- **Dati forniti**: prezzi real-time, market cap, volumi, variazioni 24h, storico prezzi
+- **Rate limit**: circa 10-50 chiamate/minuto (varia dinamicamente)
+- **Documentazione**: https://www.coingecko.com/api/documentation
+
+### Credenziali e dati mock
+
+- **Nessuna credenziale richiesta**: l'API è completamente pubblica
+- **Fallback automatico**: quando si supera il rate-limit, l'app passa automaticamente a dati mock generati localmente
+- **Mock deterministici**: i dati mock usano seed fissi per garantire consistenza tra sessioni
+- **Caching intelligente**: le coin già visitate vengono mantenute in cache per ridurre le chiamate API
+
 ## Come funziona
 
 L'applicazione fa richieste all'API pubblica di CoinGecko per ottenere i dati. Se l'API non risponde o raggiunge il limite di rate (cosa che capita spesso con API gratuita), l'app passa automaticamente a utilizzare dati mock generati localmente. Questo permette di testare l'applicazione anche senza connessione o quando API non disponibile.
 
 I dati mock sono generati con seed deterministici quindi sono consistenti tra ricaricamenti diversi della pagina.
 
-## Installazione
+## Installazione ed esecuzione
 
-Prima bisogna clonare il repository e installare le dipendenze:
+### Prerequisiti
 
+- **Node.js** versione 18 o superiore
+- **npm** (incluso con Node.js) o **yarn**
+- Browser web moderno (Chrome, Firefox, Safari, Edge)
+
+### Istruzioni passo-passo
+
+1. **Clona il repository**:
 ```bash
-cd CryptoMAT
+git clone <url-repository>
+cd progettoEsameUF07/CryptoMAT
+```
+
+2. **Installa le dipendenze**:
+```bash
 npm install
 ```
 
-Poi per avviare il server di sviluppo:
-
+3. **Avvia il server di sviluppo**:
 ```bash
 npm run dev
 ```
 
-L'applicazione sarà disponibile su `http://localhost:5173`
-
-## Build produzione
-
-Per creare una build ottimizzata per produzione:
-
-```bash
-npm run build
-```
-
-I file verranno generati nella cartella `dist/`
+4. **Apri l'applicazione**: Naviga su `http://localhost:5173` nel browser
 
 ## Struttura progetto
 
